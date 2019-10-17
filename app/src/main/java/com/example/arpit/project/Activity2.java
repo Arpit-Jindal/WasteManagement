@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.arpit.project.Adapter.CustomInfoWindowAdapter;
+import com.example.arpit.project.util.BinMarker;
+import com.example.arpit.project.util.DriverMarker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -86,9 +90,14 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+        DriverMarker currDriver =
+                new DriverMarker(1,100,0,currentLocation.getLatitude(),currentLocation.getLongitude());
+
+        LatLng latLng = new LatLng(currDriver.latitude,currDriver.longitude);
+
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are Here")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .snippet("Current Weight = " + currDriver.currentWeight+ "\nCapacity = " + currDriver.capacity);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,13));
         googleMap.addMarker(markerOptions);
 
@@ -102,19 +111,39 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
         );
         googleMap.getUiSettings().isCompassEnabled();
 
-        for (int i=1;i<=100;i+=1) {
-            LatLng latLng2 = new LatLng(currentLocation.getLatitude() + (2*Math.random() - 1)/10,currentLocation.getLongitude() + (2*Math.random() - 1)/10);
-            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("BIN " + i)
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+        int noOfBins = 100;
+        BinMarker bins[] = new BinMarker[noOfBins];
+
+        for (int i=0;i<noOfBins;i+=1) {
+            bins[i] = new BinMarker(i+1,5*Math.random() + 5,
+                    currentLocation.getLatitude() + (2*Math.random() - 1)/10,
+                    currentLocation.getLongitude() + (2*Math.random() - 1)/10,
+                    false);
+
+            LatLng latLng2 = new LatLng(bins[i].latitude,bins[i].longitude);
+            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("BIN " + bins[i].ID)
+                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                                            .snippet("Picked Up : " + bins[i].done);
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
             googleMap.addMarker(markerOptions2);
         }
 
         LatLng dump = new LatLng(28.740848,77.1538945);
         MarkerOptions mo = new MarkerOptions().position(dump).title("Dumping Ground")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .snippet("House of Trash");
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dump,12));
         googleMap.addMarker(mo);
+
+        googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(Activity2.this));
+
+//        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+//                LatLng temp = marker.getPosition();
+//                Toast.makeText(Activity2.this, "Latitude = " + temp.latitude + "\nLongitude = " + temp.longitude, Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
     @Override

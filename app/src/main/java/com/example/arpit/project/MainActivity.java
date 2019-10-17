@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.arpit.project.Adapter.CustomInfoWindowAdapter;
+import com.example.arpit.project.util.DriverMarker;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +25,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -87,9 +90,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+        DriverMarker currDriver =
+                new DriverMarker(0,100,0,currentLocation.getLatitude(),currentLocation.getLongitude());
+
+        LatLng latLng = new LatLng(currDriver.latitude,currDriver.longitude);
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are Here")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .snippet("Current Weight = " + currDriver.currentWeight + "\nCapacity = " + currDriver.capacity);
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
         googleMap.addMarker(markerOptions);
 
@@ -103,21 +110,38 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         );
 
         googleMap.getUiSettings().isCompassEnabled();
+        int noOfDrivers = 20;
+        DriverMarker[] driver = new DriverMarker[noOfDrivers];
 
-        for (int i=1;i<=20;i+=1) {
-            LatLng latLng2 = new LatLng(currentLocation.getLatitude() + (2*Math.random() - 1)/10,currentLocation.getLongitude() + (2*Math.random() - 1)/10);
-            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("Driver " + i);
+        for (int i=0;i<noOfDrivers;i+=1) {
+            driver[i] = new DriverMarker
+                    (i+1,100,0,
+                            currDriver.latitude + (2*Math.random() - 1)/10,
+                            currDriver.longitude + (2*Math.random() - 1)/10);
+            LatLng latLng2 = new LatLng(driver[i].latitude,driver[i].longitude);
+            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("Driver " + driver[i].ID)
+                    .snippet("Current Weight = " + driver[i].currentWeight + "\nCapacity = " + driver[i].capacity);
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
             googleMap.addMarker(markerOptions2);
         }
 
         LatLng dump = new LatLng(28.740848,77.1538945);
         MarkerOptions mo = new MarkerOptions().position(dump).title("Dumping Ground")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .snippet("House of Trash");
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dump,12));
         googleMap.addMarker(mo);
-    }
 
+        googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity.this));
+
+//        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+//            @Override
+//            public void onInfoWindowClick(Marker marker) {
+//                LatLng temp = marker.getPosition();
+//                Toast.makeText(MainActivity.this, "Latitude = " + temp.latitude + "\nLongitude = " + temp.longitude, Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){

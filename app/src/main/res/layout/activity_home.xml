@@ -4,29 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:background="@drawable/home_background3">
+
     <Button
         android:id="@+id/Driver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="DRIVER"
+        android:layout_width="245dp"
+        android:layout_height="55dp"
+        android:background="@color/cardview_light_background"
+        android:text="DRIVER MAP"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.891"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.947" />
+        app:layout_constraintVertical_bias="0.948" />
 
     <Button
         android:id="@+id/Bin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BIN"
+        android:layout_width="245dp"
+        android:layout_height="55dp"
+        android:background="@color/cardview_light_background"
+        android:text="BIN MAP"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.095"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.947" />
+        app:layout_constraintVertical_bias="0.844" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
