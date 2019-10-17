@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,18 +88,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are Here");
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are Here")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
         googleMap.addMarker(markerOptions);
+
+        googleMap.addCircle(
+                new CircleOptions()
+                        .center(latLng)
+                        .radius(500.0)
+                        .strokeWidth(3f)
+                        .strokeColor(Color.BLUE)
+                        .fillColor(Color.argb(50,50,50,150))
+        );
+
+        googleMap.getUiSettings().isCompassEnabled();
 
         for (int i=1;i<=20;i+=1) {
             LatLng latLng2 = new LatLng(currentLocation.getLatitude() + (2*Math.random() - 1)/10,currentLocation.getLongitude() + (2*Math.random() - 1)/10);
-            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title(i + " Location");
+            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("Driver " + i);
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng2,10));
             googleMap.addMarker(markerOptions2);
         }
+
+        LatLng dump = new LatLng(28.740848,77.1538945);
+        MarkerOptions mo = new MarkerOptions().position(dump).title("Dumping Ground")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(dump,12));
+        googleMap.addMarker(mo);
     }
 
     @Override
