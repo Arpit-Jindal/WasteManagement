@@ -24,39 +24,39 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
+    private Button driver,home;
 
-    private Button bin,home;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     public static final int REQUEST_CODE = 101;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bin = findViewById(R.id.Bin);
+        setContentView(R.layout.activity_2);
+
         home = findViewById(R.id.Home);
+        driver = findViewById(R.id.Driver);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
-
-        bin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Activity2.class);
-                startActivity(intent);
-            }
-        });
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent2 = new Intent(MainActivity.this, HomeActivity.class);
+                Intent intent = new Intent(Activity2.this, HomeActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        driver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent2 = new Intent(Activity2.this, MainActivity.class);
                 startActivity(intent2);
             }
         });
     }
-
     private void fetchLastLocation() {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]
@@ -69,10 +69,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if(location!=null){
                     currentLocation = location;
-                    Toast.makeText(getApplicationContext(),"Driver Map",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Bin Map",Toast.LENGTH_SHORT).show();
                     SupportMapFragment supportMapFragment =
                             (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.google_map);
-                    supportMapFragment.getMapAsync(MainActivity.this);
+                    supportMapFragment.getMapAsync(Activity2.this);
                 }
             }
         });
