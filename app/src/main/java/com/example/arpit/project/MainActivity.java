@@ -35,16 +35,19 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        bin = findViewById(R.id.Bin);
-        home = findViewById(R.id.Home);
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
 
+        bin = findViewById(R.id.Bin);
+        home = findViewById(R.id.Home);
         bin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Activity2.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -52,7 +55,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(MainActivity.this, HomeActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
+                finish();
             }
         });
     }
@@ -84,6 +89,14 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions);
+
+        for (int i=1;i<=20;i+=1) {
+            LatLng latLng2 = new LatLng(currentLocation.getLatitude() + (2*Math.random() - 1)/10,currentLocation.getLongitude() + (2*Math.random() - 1)/10);
+            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title(i + " Location");
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng2,10));
+            googleMap.addMarker(markerOptions2);
+        }
     }
 
     @Override

@@ -45,7 +45,9 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Activity2.this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -53,7 +55,9 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Intent intent2 = new Intent(Activity2.this, MainActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
+                finish();
             }
         });
     }
