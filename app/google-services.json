@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "10801006317",
+    "firebase_url": "https://project-ccceb.firebaseio.com",
+    "project_id": "project-ccceb",
+    "storage_bucket": "project-ccceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10801006317:android:1af16bb9da5b7ec9e96ee4",
+        "android_client_info": {
+          "package_name": "com.example.arpit.project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10801006317-53n9u1vjvmio9k5724dkib2mjbv8h0r0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiGwE5iN9v0z6WzfO-FJQW6SoIyFzF58c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10801006317-53n9u1vjvmio9k5724dkib2mjbv8h0r0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
