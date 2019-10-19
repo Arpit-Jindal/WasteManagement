@@ -36,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)

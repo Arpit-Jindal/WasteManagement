@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.arpit.project.Adapter.CustomInfoWindowAdapter;
 import com.example.arpit.project.util.BinMarker;
 import com.example.arpit.project.util.DriverMarker;
+import com.example.arpit.project.util.pair;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -88,10 +89,59 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
             }
         });
     }
+
+    public pair getll(int i){
+        pair p = new pair(28.7166278,77.1139979);
+        switch(i){
+            case 1:
+                p.lat = 28.714322;
+                p.lon = 77.116545;
+                break;
+            case 2:
+                p.lat = 28.7172435;
+                p.lon = 77.1190887;
+                break;
+            case 3:
+                p.lat = 28.7182435;
+                p.lon = 77.1195979;
+                break;
+            case 4:
+                p.lat = 28.7204488;
+                p.lon = 77.1199755;
+                break;
+            case 5:
+                p.lat = 28.725456;
+                p.lon = 77.126711;
+                break;
+            case 6:
+                p.lat = 28.7256676;
+                p.lon = 77.1271328;
+                break;
+            case 7:
+                p.lat = 28.7291465;
+                p.lon = 77.1305471;
+                break;
+            case 8:
+                p.lat = 28.734726;
+                p.lon = 77.137525;
+                break;
+            case 9:
+                p.lat = 28.7298339;
+                p.lon = 77.1400939;
+                break;
+            case 10:
+                p.lat = 28.7305858;
+                p.lon = 77.1419342;
+                break;
+        }
+        return p;
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        double tempLat = 28.711834; //use currentLocation.getLatitude() in real
+        double tempLong = 77.1133729; //use currentLocation.getLongitude() in real
         DriverMarker currDriver =
-                new DriverMarker(1,100,0,currentLocation.getLatitude(),currentLocation.getLongitude());
+                new DriverMarker(1,100,0,tempLat,tempLong);
 
         LatLng latLng = new LatLng(currDriver.latitude,currDriver.longitude);
 
@@ -111,22 +161,44 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
         );
         googleMap.getUiSettings().isCompassEnabled();
 
-        int noOfBins = 100;
+
+
+//        int noOfBins = 100;
+//        BinMarker bins[] = new BinMarker[noOfBins];
+//
+//        for (int i=0;i<noOfBins;i+=1) {
+//            bins[i] = new BinMarker(i+1,5*Math.random() + 5,
+//                    currentLocation.getLatitude() + (2*Math.random() - 1)/10,
+//                    currentLocation.getLongitude() + (2*Math.random() - 1)/10,
+//                    false);
+//
+//            LatLng latLng2 = new LatLng(bins[i].latitude,bins[i].longitude);
+//            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("BIN " + bins[i].ID)
+//                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+//                                            .snippet("Picked Up : " + bins[i].done);
+//            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
+//            googleMap.addMarker(markerOptions2);
+//        }
+
+        int noOfBins = 10;
         BinMarker bins[] = new BinMarker[noOfBins];
 
         for (int i=0;i<noOfBins;i+=1) {
+            pair p = new pair(getll(i+1).lat,getll(i+1).lon);
             bins[i] = new BinMarker(i+1,5*Math.random() + 5,
-                    currentLocation.getLatitude() + (2*Math.random() - 1)/10,
-                    currentLocation.getLongitude() + (2*Math.random() - 1)/10,
+                    p.lat, p.lon,
                     false);
-
+            // currentLocation.getLatitude() + (2*Math.random() - 1)/10, currentLocation.getLongitude() + (2*Math.random() - 1)/10,
             LatLng latLng2 = new LatLng(bins[i].latitude,bins[i].longitude);
             MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("BIN " + bins[i].ID)
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-                                            .snippet("Picked Up : " + bins[i].done);
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                    .snippet("Picked Up : " + bins[i].done);
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
             googleMap.addMarker(markerOptions2);
         }
+
+
+
 
         LatLng dump = new LatLng(28.740848,77.1538945);
         MarkerOptions mo = new MarkerOptions().position(dump).title("Dumping Ground")
