@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "10801006317-krhau8e2tdgl6paime4jfs3finru6ck6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.arpit.project",
+            "certificate_hash": "b46a7c01b4ae46ed57928ca2a12b5ed4ef1a3b69"
+          }
+        },
+        {
           "client_id": "10801006317-53n9u1vjvmio9k5724dkib2mjbv8h0r0.apps.googleusercontent.com",
           "client_type": 3
         }

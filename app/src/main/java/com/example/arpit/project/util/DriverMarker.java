@@ -7,6 +7,7 @@ public class DriverMarker {
     public double latitude;
     public double longitude;
 
+
     public DriverMarker(int ID, int capacity, int currentWeight, double latitude, double longitude) {
         this.ID = ID;
         this.capacity = capacity;
@@ -14,4 +15,5 @@ public class DriverMarker {
         this.latitude = latitude;
         this.longitude = longitude;
     }
+
 }

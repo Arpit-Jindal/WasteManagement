@@ -5,13 +5,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.icu.util.LocaleData;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.arpit.project.Adapter.CustomInfoWindowAdapter;
@@ -27,24 +32,55 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
-    private Button driver,home;
 
+    Button driver,home,send,complete;
+    EditText weight,type;
+    Data d;
+    int i = 1;
+    DatabaseReference databaseReference;
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     public static final int REQUEST_CODE = 101;
+    Dictionary dict = new Hashtable();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        dict.put(new pair(28.7166278,77.1139979),1);
+        dict.put(new pair(28.7172435,77.1190887),2);
+        dict.put(new pair(28.7182435,77.1195979),3);
+        dict.put(new pair(28.7204488,77.1199755),4);
+        dict.put(new pair(28.725456,77.126711),5);
+        dict.put(new pair(28.7256676,77.1271328),6);
+        dict.put(new pair(28.7291465,77.1305471),7);
+        dict.put(new pair(28.734726,77.137525),8);
+        dict.put(new pair(28.7298339,77.1400939),9);
+        dict.put(new pair(28.7305858,77.1419342),10);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
 
         home = findViewById(R.id.Home);
         driver = findViewById(R.id.Driver);
+        weight = findViewById(R.id.etWeight);
+        type = findViewById(R.id.etType);
+        send = findViewById(R.id.submit);
+        complete = findViewById(R.id.complete);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Data");
+        d = new Data();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         fetchLastLocation();
@@ -66,6 +102,60 @@ public class Activity2 extends FragmentActivity implements OnMapReadyCallback {
                 intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
                 finish();
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel channel = new NotificationChannel("MyNotifications","MyNotifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
+        //Notification
+        FirebaseMessaging.getInstance().subscribeToTopic("General")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Successful";
+                        if (!task.isSuccessful()) {
+                            msg = "Failed";
+                        }
+                        //Toast.makeText(Activity2.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String weightText = weight.getText().toString();
+                String typeText = type.getText().toString();
+                if(weightText.equals("") || typeText.equals("") ){
+                    Toast.makeText(Activity2.this, "Kindly enter all the details!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    fetchLastLocation();
+                    pair test = new pair(currentLocation.getAltitude(),currentLocation.getLongitude());
+                    int binno = 0;
+                    if(dict.get(test) != null){
+                        binno = (int) dict.get(test);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+                        String formatt = simpleDateFormat.format(new Date());
+                        d.setTime(formatt);
+                        d.setWeight(weightText);
+                        d.setType(typeText);
+                        String date = "";
+//                        for(int i=0;i<10;i++){
+//                            date += formatt[i]
+//                        }
+                        databaseReference.child(formatt).child("Bin " + binno).setValue(d);i+=1;
+                        Toast.makeText(Activity2.this, "Data has been saved!", Toast.LENGTH_SHORT).show();
+                        weight.setText("");
+                        type.setText("");
+                    }else{
+                        Toast.makeText(Activity2.this, "Kindly reach the pickup location!!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
             }
         });
     }

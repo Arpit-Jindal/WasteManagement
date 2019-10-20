@@ -29,6 +29,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private Button bin,home;
@@ -89,10 +92,17 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        double tempLat = 28.711834; //use currentLocation.getLatitude() in real
+        double tempLong = 77.1133729; //use currentLocation.getLongitude() in real
         DriverMarker currDriver =
-                new DriverMarker(0,100,0,currentLocation.getLatitude(),currentLocation.getLongitude());
+                new DriverMarker(1,100,0,tempLat,tempLong);
 
         LatLng latLng = new LatLng(currDriver.latitude,currDriver.longitude);
+
+//        DriverMarker currDriver =
+//                new DriverMarker(0,100,0,currentLocation.getLatitude(),currentLocation.getLongitude());
+
+//        LatLng latLng = new LatLng(currDriver.latitude,currDriver.longitude);
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("You are Here")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .snippet("Current Weight = " + currDriver.currentWeight + "\nCapacity = " + currDriver.capacity);
@@ -112,17 +122,42 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         int noOfDrivers = 20;
         DriverMarker[] driver = new DriverMarker[noOfDrivers];
 
+
+        Random gen = new Random(4);
+
+
         for (int i=0;i<noOfDrivers;i+=1) {
             driver[i] = new DriverMarker
                     (i+1,100,0,
-                            currDriver.latitude + (2*Math.random() - 1)/10,
-                            currDriver.longitude + (2*Math.random() - 1)/10);
-            LatLng latLng2 = new LatLng(driver[i].latitude,driver[i].longitude);
-            MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("Driver " + driver[i].ID)
-                    .snippet("Current Weight = " + driver[i].currentWeight + "\nCapacity = " + driver[i].capacity);
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
-            googleMap.addMarker(markerOptions2);
+                            tempLat + (2*gen.nextDouble() - 1)/10,
+                            tempLong + (2*gen.nextDouble() - 1)/10);
+            if(i!= 10 && i!=19 &&i!=12 && i!=8) {
+                LatLng latLng2 = new LatLng(driver[i].latitude, driver[i].longitude);
+                MarkerOptions markerOptions2 = new MarkerOptions().position(latLng2).title("Driver " + driver[i].ID)
+                        .snippet("Current Weight = " + driver[i].currentWeight + "\nCapacity = " + driver[i].capacity);
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng2));
+                googleMap.addMarker(markerOptions2);
+            }
         }
+        LatLng l1 = new LatLng(driver[10].latitude,driver[10].longitude);
+        MarkerOptions m1 = new MarkerOptions().position(l1).title("Cluster 1").snippet("Driver 1\nDriver 2\nDriver 4\nDriver 7\nDriver 12\nDriver 15\nDriver 19")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(l1,12));
+        googleMap.addMarker(m1);
+
+        LatLng l2 = new LatLng(driver[12].latitude,driver[12].longitude);
+        MarkerOptions m2 = new MarkerOptions().position(l2).title("Cluster 2").snippet("Driver 3\nDriver 6\nDriver 8\nDriver 10\nDriver 17\nDriver 18")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(l2,12));
+        googleMap.addMarker(m2);
+
+        LatLng l3 = new LatLng(driver[8].latitude,driver[8].longitude);
+        MarkerOptions m3 = new MarkerOptions().position(l3).title("Cluster 3").snippet("Driver 0\nDriver 5\nDriver 14\nDriver 16")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(l3,12));
+        googleMap.addMarker(m3);
+
+
 
         LatLng dump = new LatLng(28.740848,77.1538945);
         MarkerOptions mo = new MarkerOptions().position(dump).title("Dumping Ground")
