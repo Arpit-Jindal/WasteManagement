@@ -8,20 +8,19 @@
 
     <Button
         android:id="@+id/submit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="85dp"
+        android:layout_height="37dp"
         android:background="@color/cardview_light_background"
         android:text="SUBMIT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.797" />
+        app:layout_constraintVertical_bias="0.773" />
 
     <EditText
         android:id="@+id/etType"
-        android:layout_width="239dp"
+        android:layout_width="260dp"
         android:layout_height="43dp"
         android:ems="10"
         android:hint="Type of Garbage Picked"
@@ -30,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_map"
-        app:layout_constraintVertical_bias="0.326" />
+        app:layout_constraintVertical_bias="0.285" />
 
     <fragment
         android:id="@+id/google_map"
@@ -44,50 +43,37 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/Driver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:text="DRIVER MAP"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.897" />
-
-    <Button
-        android:id="@+id/Home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        android:text="HOME"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.126"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.897" />
-
     <EditText
         android:id="@+id/etWeight"
-        android:layout_width="239dp"
+        android:layout_width="260dp"
         android:layout_height="43dp"
         android:ems="10"
         android:hint="Weight of Garbage Picked"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_map"
-        app:layout_constraintVertical_bias="0.12" />
+        app:layout_constraintVertical_bias="0.086" />
+
+    <Button
+        android:id="@+id/home"
+        android:layout_width="334dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/cardview_light_background"
+        android:text="HOME"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.924" />
 
     <Button
         android:id="@+id/complete"
         android:layout_width="334dp"
-        android:layout_height="47dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="16dp"
         android:background="@color/cardview_light_background"
         android:text="COMPLETE TRIP"
